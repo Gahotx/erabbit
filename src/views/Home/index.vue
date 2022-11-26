@@ -1,11 +1,9 @@
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+  <div>首页</div>
 </template>
 <script>
 export default {
-  name: 'App',
+  name: 'Home',
   setup() {}
 }
 
