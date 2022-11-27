@@ -25,11 +25,11 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   response => {
-    const { success, message } = response.data
-    if (success) {
+    const { code, msg } = response.data
+    if (code) {
       return response.data
     } else {
-      return Promise.reject(message)
+      return Promise.reject(msg)
     }
   },
   error => {
