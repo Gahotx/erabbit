@@ -5,24 +5,51 @@
         <router-link to="/">小兔鲜</router-link>
       </h1>
       <app-header-nav></app-header-nav>
-      <div class="search">
+      <div class="search" :class="{ active: inputType }">
         <i class="iconfont icon-search"></i>
-        <input type="text" placeholder="搜一搜" />
+        <input
+          type="text"
+          placeholder="搜一搜"
+          @keyup.enter="search"
+          v-model.trim="keyword"
+          @focus="changeType(true)"
+          @blur="changeType(false)"
+        />
       </div>
       <div class="cart">
-        <a class="curr" href="#"> <i class="iconfont icon-cart"></i><em>2</em> </a>
+        <a class="curr" href="#">
+          <i class="iconfont icon-cart"></i><em>2</em>
+        </a>
       </div>
     </div>
   </header>
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import AppHeaderNav from './AppHeaderNav.vue'
 
 export default {
   name: 'AppHeader',
   components: {
     AppHeaderNav
+  },
+  setup() {
+    const keyword = ref('')
+    const router = useRouter()
+    const search = e => {
+      router.push(`/search?keyword=${keyword.value}`)
+      keyword.value = ''
+      e.target.blur()
+    }
+
+    const inputType = ref(false)
+    const changeType = (type) => {
+      inputType.value = type
+    }
+
+    return { keyword, search, inputType, changeType }
   }
 }
 </script>
@@ -81,6 +108,9 @@ export default {
       width: 140px;
       padding-left: 5px;
       color: #666;
+    }
+    &.active {
+      border-color: var(--xtx-color);
     }
   }
   .cart {

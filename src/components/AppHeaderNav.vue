@@ -2,7 +2,7 @@
   <ul class="app-header-nav">
     <li class="home"><router-link to="/">首页</router-link></li>
     <li v-for="item in $store.state.category.list" :key="item.id">
-      <a href="#">{{ item.name }}</a>
+      <router-link active-class="active" :to="`/category/${item.id}`">{{ item.name }}</router-link>
     </li>
   </ul>
 </template>
@@ -29,6 +29,10 @@ export default {
       line-height: 32px;
       height: 32px;
       display: inline-block;
+      &.active {
+        color: var(--xtx-color);
+        border-bottom: 1px solid var(--xtx-color);
+      }
     }
     &:hover {
       a {

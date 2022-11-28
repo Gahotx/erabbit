@@ -1,13 +1,38 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
+const Layout = () => import('@/views/Layout')
+const Home = () => import('@/views/Home')
+const Category = () => import('@/views/Category')
+const Search = () => import('@/views/Search')
+
 const routes = [
   {
     path: '/',
-    component: () => import('@/views/Layout'),
+    component: Layout,
     children: [
       {
-        path: '/',
-        component: () => import('@/views/Home')
+        path: '',
+        component: Home
+      }
+    ]
+  },
+  {
+    path: '/category/:cid',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: Category
+      }
+    ]
+  },
+  {
+    path: '/search',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: Search
       }
     ]
   }
