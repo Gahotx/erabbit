@@ -16,10 +16,10 @@
         <h3>全部分类</h3>
         <ul>
           <li v-for="item in secList" :key="item.id">
-            <a href="javascript:;">
+            <router-link :to="`/category/sub/${item.id}`">
               <img :src="item.picture" />
               <p>{{ item.name }}</p>
-            </a>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -29,7 +29,7 @@
         <div class="head">
           <h3>- {{ item.name }} -</h3>
           <p class="tag">物美价廉，品质之选</p>
-          <xtx-more />
+          <xtx-more :to="`/category/sub/${item.id}`" />
         </div>
         <div class="body">
           <ul>
@@ -48,8 +48,8 @@
 <script>
 import { onMounted, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
-import GoodsItem from '@/components/GoodsItem.vue'
 import { getBanner, getSecCategory } from '@/api'
+import GoodsItem from '@/components/GoodsItem.vue'
 
 export default {
   name: 'Category',

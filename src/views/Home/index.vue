@@ -21,11 +21,11 @@
 
 <script>
 import { onMounted, ref } from 'vue'
+import { getBanner } from '@/api'
 import HomeNew from './components/HomeNew.vue'
 import HomeCategory from './components/HomeCategory.vue'
 import HomeHot from './components/HomeHot.vue'
 import HomeBrand from './components/HomeBrand.vue'
-import { getBanner } from '@/api'
 
 export default {
   name: 'Home',

@@ -14,3 +14,18 @@ export function getSecCategory(id) {
     }
   })
 }
+
+/**
+ * 二级类目-筛选条件
+ * @param {*} id 二级分类id
+ * @returns
+ */
+export function getSubFilter(id) {
+  return request({
+    url: '/category/sub/filter',
+    method: 'GET',
+    params: {
+      id
+    }
+  })
+}

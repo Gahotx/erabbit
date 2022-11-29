@@ -45,9 +45,9 @@
 
 <script>
 import { ref } from 'vue'
-import HomePanel from './HomePanel.vue'
 import { getHotBrand } from '@/api'
 import { useLazyData } from '@/utils/hooks'
+import HomePanel from './HomePanel.vue'
 
 export default {
   name: 'HomeBrand',

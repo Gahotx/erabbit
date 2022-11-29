@@ -40,9 +40,9 @@
 <script>
 import { reactive, ref } from 'vue'
 import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { getSearchResult } from '@/api'
 import SearchSort from './components/SearchSort.vue'
 import GoodsItem from '@/components/GoodsItem.vue'
-import { getSearchResult } from '@/api'
 
 export default {
   name: 'Search',

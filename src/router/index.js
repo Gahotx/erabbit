@@ -4,6 +4,8 @@ const Layout = () => import('@/views/Layout')
 const Home = () => import('@/views/Home')
 const Category = () => import('@/views/Category')
 const Search = () => import('@/views/Search')
+const Goods = () => import('@/views/Goods')
+const SubFilter = () => import('@/views/Category/SubFilter')
 
 const routes = [
   {
@@ -27,6 +29,16 @@ const routes = [
     ]
   },
   {
+    path: '/category/sub/:sid',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: SubFilter
+      }
+    ]
+  },
+  {
     path: '/search',
     component: Layout,
     children: [
@@ -35,11 +47,22 @@ const routes = [
         component: Search
       }
     ]
+  },
+  {
+    path: '/goods/:gid',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: Goods
+      }
+    ]
   }
 ]
 
 const router = createRouter({
   history: createWebHashHistory(),
+  scrollBehavior: () => ({ top: 0 }), // 路由切换时，滚动条回到最顶端
   routes
 })
 

@@ -18,10 +18,10 @@
   </home-panel>
 </template>
 <script>
-import HomePanel from './HomePanel.vue'
-import HomeSkeleton from '@/components/HomeSkeleton.vue'
 import { getHot } from '@/api'
 import { useLazyData } from '@/utils/hooks'
+import HomePanel from './HomePanel.vue'
+import HomeSkeleton from '@/components/HomeSkeleton.vue'
 
 export default {
   name: 'HomeHot',
