@@ -6,6 +6,7 @@ const Category = () => import('@/views/Category')
 const Search = () => import('@/views/Search')
 const Goods = () => import('@/views/Goods')
 const SubFilter = () => import('@/views/Category/SubFilter')
+const Login = () => import('@/views/Login')
 
 const routes = [
   {
@@ -57,6 +58,10 @@ const routes = [
         component: Goods
       }
     ]
+  },
+  {
+    path: '/login',
+    component: Login
   }
 ]
 
