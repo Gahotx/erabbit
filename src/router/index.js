@@ -7,6 +7,7 @@ const Search = () => import('@/views/Search')
 const Goods = () => import('@/views/Goods')
 const SubFilter = () => import('@/views/Category/SubFilter')
 const Login = () => import('@/views/Login')
+const Cart = () => import('@/views/Cart')
 
 const routes = [
   {
@@ -50,7 +51,7 @@ const routes = [
     ]
   },
   {
-    path: '/goods/:gid',
+    path: '/product/:gid',
     component: Layout,
     children: [
       {
@@ -62,6 +63,16 @@ const routes = [
   {
     path: '/login',
     component: Login
+  },
+  {
+    path: '/cart',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        component: Cart
+      }
+    ]
   }
 ]
 

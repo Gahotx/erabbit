@@ -23,9 +23,13 @@ export default {
     const getGoodsRelevantFn = async() => {
       const res = await getGoodsRelevant({
         id: route.params.gid,
-        limit: 4
+        limit: 20
       })
-      sliders.value = res.result
+      const pageSize = 4
+      const pageCount = Math.ceil(res.result.length / pageSize)
+      for (let i = 0; i < pageCount; i++) {
+        sliders.value.push(res.result.slice(pageSize * i, pageSize * (i + 1)))
+      }
     }
     getGoodsRelevantFn()
 
@@ -64,6 +68,28 @@ export default {
         left: 0;
         top: 2px;
         background: lighten(#27ba9b, 40%);
+      }
+    }
+  }
+}
+:deep(.xtx-carousel) {
+  height: 380px;
+  .carousel {
+    &-indicator {
+      bottom: 30px;
+      span {
+        &.active {
+          background: var(--xtx-color);
+        }
+      }
+    }
+    &-btn {
+      top: 110px;
+      opacity: 1;
+      background: rgba(0,0,0,0);
+      color: #ddd;
+      i {
+        font-size: 30px;
       }
     }
   }

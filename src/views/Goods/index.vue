@@ -33,14 +33,18 @@
           <xtx-numbox :min="1" v-model="count" label="数量" />
 
           <!-- 按钮 -->
-          <xtx-button type="primary" style="margin-top: 20px">
+          <xtx-button
+            type="primary"
+            style="margin-top: 20px"
+            @click="addGoodsCart"
+          >
             加入购物车
           </xtx-button>
         </div>
       </div>
 
       <!-- 同类商品推荐 -->
-      <!-- <goods-relevant></goods-relevant> -->
+      <goods-relevant></goods-relevant>
 
       <!-- 商品底部信息 -->
       <goods-footer :goods="goodsList"></goods-footer>
@@ -53,13 +57,15 @@
 
 <script>
 import { ref } from 'vue'
-import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
+import Message from 'erabbit-ui/packages/components/Message'
 import { getGoods } from '@/api'
 import GoodsSales from './components/GoodsSales.vue'
 import GoodsInfo from './components/GoodsInfo.vue'
 import GoodsFooter from './components/GoodsFooter.vue'
 import GoodsWarn from './components/GoodsWarn.vue'
-// import GoodsRelevant from './components/GoodsRelevant.vue'
+import GoodsRelevant from './components/GoodsRelevant.vue'
 
 export default {
   name: 'Goods',
@@ -67,35 +73,85 @@ export default {
     GoodsSales,
     GoodsInfo,
     GoodsFooter,
+    GoodsRelevant,
     GoodsWarn
-    // GoodsRelevant
   },
   setup() {
     const route = useRoute()
+    const router = useRouter()
+    const store = useStore()
     const goodsList = ref(null) // 商品信息
     const loading = ref(true)
+    const currSku = ref(null)
+    const count = ref(1)
 
-    const getGoodsFn = async(gid) => {
+    const getGoodsFn = async gid => {
       const res = await getGoods(gid)
       goodsList.value = res.result
       loading.value = false
     }
     getGoodsFn(route.params.gid)
 
-    const changeSkuFn = obj => {
-      console.log(obj)
+    const changeSkuFn = sku => {
+      if (sku) {
+        goodsList.value.price = sku.price
+        goodsList.value.oldPrice = sku.oldPrice
+        goodsList.value.inventory = sku.inventory
+        currSku.value = sku
+      } else {
+        currSku.value = null
+      }
     }
-    const count = ref(1)
+
+    const addGoodsCart = () => {
+      // 先判断商品规格是否选择完整
+      if (!currSku.value || Object.keys(currSku.value).length === 0) {
+        return Message({ text: '请选择商品规格' })
+      } else if (count.value > goodsList.value.inventory) {
+        return Message({ text: '库存不足' })
+      } else {
+        // 判断用户是否登录
+        if (store.state.user.profile.token) {
+          // 已登录
+          store.dispatch('cart/addCartAct', {
+            id: goodsList.value.id,
+            skuId: currSku.value.skuId,
+            name: goodsList.value.name,
+            picture: goodsList.value.mainPictures[0],
+            price: currSku.value.price,
+            nowPrice: currSku.value.price,
+            count: count.value,
+            attrsText: currSku.value.specsText,
+            selected: true,
+            isEffective: true,
+            stock: currSku.value.inventory
+          }).then(() => {
+            Message({ text: '加入购物车成功', type: 'success' })
+          }).catch(() => {
+            Message({ type: 'error', text: '加入购物车失败' })
+          })
+        } else {
+          // 未登录
+          router.push(
+            `/login?redirect=${encodeURIComponent(
+              router.currentRoute.value.fullPath
+            )}`
+          )
+          return Message({ text: '请登录后再操作' })
+        }
+      }
+    }
 
     onBeforeRouteUpdate((to, from, next) => {
+      count.value = 1
       goodsList.value = null
+      currSku.value = null
       loading.value = true
       getGoodsFn(to.params.gid)
-      count.value = 1
       next()
     })
 
-    return { goodsList, loading, changeSkuFn, count }
+    return { goodsList, loading, changeSkuFn, count, addGoodsCart }
   }
 }
 </script>

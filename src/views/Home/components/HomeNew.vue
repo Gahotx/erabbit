@@ -6,7 +6,7 @@
       <transition name="fade">
         <ul class="goods-list" v-if="list.length">
           <li v-for="item in list" :key="item.id">
-            <router-link :to="`/goods/${item.id}`">
+            <router-link :to="`/product/${item.id}`">
               <img :src="item.picture" alt="" />
               <p class="name ellipsis">{{ item.name }}</p>
               <p class="price">&yen;{{ item.price }}</p>

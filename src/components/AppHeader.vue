@@ -8,19 +8,15 @@
       <div class="search" :class="{ active: inputType }">
         <i class="iconfont icon-search"></i>
         <input
-          type="text"
-          placeholder="搜一搜"
           @keyup.enter="search"
-          v-model.trim="keyword"
           @focus="changeType(true)"
           @blur="changeType(false)"
+          v-model.trim="keyword"
+          type="text"
+          placeholder="搜一搜"
         />
       </div>
-      <div class="cart">
-        <a class="curr" href="#">
-          <i class="iconfont icon-cart"></i><em>2</em>
-        </a>
-      </div>
+      <app-header-cart></app-header-cart>
     </div>
   </header>
 </template>
@@ -29,11 +25,13 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import AppHeaderNav from './AppHeaderNav.vue'
+import AppHeaderCart from './AppHeaderCart.vue'
 
 export default {
   name: 'AppHeader',
   components: {
-    AppHeaderNav
+    AppHeaderNav,
+    AppHeaderCart
   },
   setup() {
     const keyword = ref('')
@@ -45,7 +43,7 @@ export default {
     }
 
     const inputType = ref(false)
-    const changeType = (type) => {
+    const changeType = type => {
       inputType.value = type
     }
 

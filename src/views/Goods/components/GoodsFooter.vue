@@ -23,13 +23,6 @@
     </div>
     <div class="right">
       <div class="goods-hot">
-        <h3>同类推荐</h3>
-        <goods-item
-          v-for="item in goods.similarProducts"
-          :key="item.id"
-          :goods="item"
-        />
-
         <h3>每日热榜</h3>
         <goods-item
           v-for="item in goods.hotByDay"
@@ -39,7 +32,6 @@
 
         <h3>每周热榜</h3>
         <goods-item v-for="item in hotGoods" :key="item.id" :goods="item" />
-
       </div>
     </div>
   </div>

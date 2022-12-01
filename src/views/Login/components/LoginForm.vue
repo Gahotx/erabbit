@@ -111,7 +111,7 @@
 <script>
 import { ref, watch } from 'vue'
 import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { Field, Form, ErrorMessage } from 'vee-validate'
 import { useIntervalFn } from '@vueuse/core'
 import Message from 'erabbit-ui/packages/components/Message'
@@ -127,11 +127,11 @@ export default {
   setup() {
     const isMsgLogin = ref(false)
     const form = ref({
-      account: null,
-      password: null,
+      account: 'xiaotuxian001',
+      password: 123456,
       mobile: null,
       code: null,
-      isAgree: false
+      isAgree: true
     })
     // 表单校验
     const schema = {
@@ -174,7 +174,9 @@ export default {
     })
 
     const store = useStore()
+    const route = useRoute()
     const router = useRouter()
+    const redirect = ref(route.query.redirect)
 
     // 验证码倒计时
     const time = ref(0)
@@ -204,6 +206,7 @@ export default {
         formCom.value.setFieldError('mobile', valid)
       }
     }
+
     const submitFn = async() => {
       const valid = await formCom.value.validate()
       if (valid) {
@@ -231,11 +234,12 @@ export default {
             mobile,
             token
           })
+          store.dispatch('cart/getCartAct')
           Message({
             type: 'success',
             text: '登录成功'
           })
-          router.replace('/')
+          router.replace(redirect.value || '/')
         } catch (error) {
           Message({
             type: 'error',
@@ -245,7 +249,7 @@ export default {
       }
     }
 
-    return { isMsgLogin, form, schema, formCom, submitFn, sendFn, time }
+    return { isMsgLogin, form, schema, formCom, submitFn, sendFn, time, redirect }
   }
 }
 </script>
