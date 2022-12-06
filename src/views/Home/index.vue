@@ -21,6 +21,7 @@
 
 <script>
 import { onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
 import { getBanner } from '@/api'
 import HomeNew from './components/HomeNew.vue'
 import HomeCategory from './components/HomeCategory.vue'
@@ -37,10 +38,12 @@ export default {
   },
   setup() {
     const sliders = ref([])
+    const store = useStore()
 
     onMounted(async() => {
       const res = await getBanner()
       sliders.value = res.result
+      store.dispatch('cart/getCartAct')
       // console.log(res)
     })
 

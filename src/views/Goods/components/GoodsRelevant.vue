@@ -27,6 +27,7 @@ export default {
       })
       const pageSize = 4
       const pageCount = Math.ceil(res.result.length / pageSize)
+      // 数据结构：sliders = [[5个], [5个], [5个], [5个]]
       for (let i = 0; i < pageCount; i++) {
         sliders.value.push(res.result.slice(pageSize * i, pageSize * (i + 1)))
       }

@@ -103,7 +103,7 @@
           共 {{ $store.getters['cart/validTotal'] }} 件商品，已选择
           {{ $store.getters['cart/selectedTotal'] }} 件，商品合计：
           <span class="red">¥{{ $store.getters['cart/selectedAmount'] }}</span>
-          <xtx-button type="primary">下单结算</xtx-button>
+          <xtx-button type="primary" @click="CalcBill">下单结算</xtx-button>
         </div>
       </div>
 
@@ -115,6 +115,7 @@
 
 <script>
 import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 import Message from 'erabbit-ui/packages/components/Message'
 import Confirm from 'erabbit-ui/packages/components/Confirm'
 import CartNone from './components/CartNone.vue'
@@ -128,6 +129,8 @@ export default {
   },
   setup() {
     const store = useStore()
+    const router = useRouter()
+
     store.dispatch('cart/getCartAct')
     // 单选
     const checkOne = (skuId, selected) => {
@@ -174,6 +177,14 @@ export default {
     const changeSku = (oldSkuId, newSku) => {
       store.dispatch('cart/updateCartSkuAct', { oldSkuId, newSku })
     }
+    // 结算
+    const CalcBill = () => {
+      if (store.getters['cart/selectedTotal'] === 0) {
+        return Message({ text: '至少选中一件商品才能结算' })
+      } else {
+        router.push('/user/order')
+      }
+    }
 
     return {
       checkOne,
@@ -181,7 +192,8 @@ export default {
       delCartFn,
       batchDelCartFn,
       changeCount,
-      changeSku
+      changeSku,
+      CalcBill
     }
   }
 }

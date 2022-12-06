@@ -1,6 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import router from '@/router'
+import Message from 'erabbit-ui/packages/components/Message'
 
 export const baseURL = 'http://pcapi-xiaotuxian-front-devtest.itheima.net/'
 const service = axios.create({
@@ -35,7 +36,9 @@ service.interceptors.response.use(
   error => {
     if (error?.response?.status === 401) {
       store.commit('user/setProfile', {})
-      router.replace(`/login?redirect=${encodeURIComponent(router.currentRoute.value.fullPath)}`)
+      store.commit('cart/setCart', [])
+      Message({ text: error?.response?.data?.message || '请登录后再操作' })
+      router.push(`/login?redirect=${encodeURIComponent(router.currentRoute.value.fullPath)}`)
     }
     return Promise.reject(error)
   }
